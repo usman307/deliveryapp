@@ -12,7 +12,7 @@ import '../1stpage.dart';
 class splashprovider with ChangeNotifier{
   void islogin(BuildContext context){
 
-    Timer(Duration(seconds: 4), () => {
+    Timer(Duration(seconds: 5), () => {
 
       Navigator.push(context, MaterialPageRoute(builder: (context)=>firstinterface()))
     });

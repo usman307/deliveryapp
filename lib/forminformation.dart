@@ -143,6 +143,7 @@ border: OutlineInputBorder(
                                         email: email.text.toString(),
                                         password: password.text.toString())
                                         .then((value) {
+                                          Navigator.push(context, MaterialPageRoute(builder: (context)=>mainfairestore()));
                                       setState(() {
                                         loading = false;
                                       });
@@ -162,7 +163,7 @@ border: OutlineInputBorder(
                               padding: const EdgeInsets.symmetric(horizontal: 10),
                               child: InkWell(
                                 onTap: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>mainfairestore()));
+                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>signup()));
                                 },
                                   child: Text('Not have Account\n Sign Up?',style: TextStyle(decoration: TextDecoration.underline,fontWeight: FontWeight.bold,fontSize: 17),)),
                             )

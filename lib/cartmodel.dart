@@ -4,7 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 class cartmodel{
   String ?cartid;
   int ?cartprice;
-  int ?cartquantity;
+  int cartquantity;
   String ?cartname;
   String ?cartimages;
   cartmodel({required this.cartimages,required this.cartid,required this.cartname,required this.cartprice,required this.cartquantity});

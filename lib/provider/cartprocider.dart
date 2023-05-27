@@ -37,11 +37,31 @@ Future<dynamic >getcartitems() async{
 
  _getcartitem = firebase.docs.map((e) => cartmodel(cartimages: e['cartimages'], cartid: e['cartid'],
      cartname: e['cartname'], cartprice: e['cartprice'], cartquantity: e['cartquantity'])).toList();
-
-
-
-notifyListeners();
+ notifyListeners();
 }
+int  totalprice() {
+  int total=0;
+for (var i in _getcartitem){
+  total = total+(i.cartprice ?? 0) * (i.cartquantity ?? 0);
+}
+notifyListeners();
+print(total);
+return total;
+}
+
+void increasequantity(cartmodel cart){
+cart.cartquantity++;
+notifyListeners();
+
+}
+void decreasequantity(cartmodel cart){
+  if(cart.cartquantity>1){
+
+    cart.cartquantity--;
+    notifyListeners();
+  }
+}
+
 
 // Future<List<Map<String, dynamic>>> getDataFromFirestore() async {
 //   CollectionReference<Map<String, dynamic>> myCollection = FirebaseFirestore.instance.collection('cartmodel');

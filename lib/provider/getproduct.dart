@@ -31,9 +31,9 @@ List<productmodel> get getproductlist => _productlist;
 // productlist=newproductlist;
 //     notifyListeners();
 
- final firebase = await FirebaseFirestore.instance.collection('products').get();
+ final firebase = await  FirebaseFirestore.instance.collection('products').get();
 
- _productlist=firebase.docs.map((e) => productmodel(
+ _productlist= firebase.docs.map((e) => productmodel(
    productname: e['name'],
    productimages: e['images'],
    productprice: e['price'],

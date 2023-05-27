@@ -4,9 +4,10 @@ import 'package:untitled/1stpage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:untitled/cartscreen.dart';
 import 'package:untitled/provider/cartprocider.dart';
-import 'package:untitled/provider/cartscreenprovider.dart';
+
 import 'package:untitled/provider/getproduct.dart';
 import 'package:untitled/provider/splashscreenprovider.dart';
+import 'package:untitled/provider/timerclass.dart';
 import 'package:untitled/provider/upload_provider_picture_class.dart';
 import 'package:untitled/splashscreen.dart';
 
@@ -33,6 +34,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_)=>uploadimage()),
 ChangeNotifierProvider(create:(_)=>cartprovider() ),
       ChangeNotifierProvider(create: (_)=>productprovider()),
+      ChangeNotifierProvider(create: (_)=>timerclass()),
 
     ],
       child: MaterialApp(

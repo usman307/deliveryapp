@@ -1,8 +1,17 @@
+
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:untitled/appetizer.dart';
+import 'package:untitled/fries.dart';
 import 'package:untitled/helper.dart';
 import 'package:untitled/modelclass.dart';
 import 'package:untitled/productcategory.dart';
+import 'package:untitled/productmodel.dart';
+import 'package:untitled/provider/getproduct.dart';
+import 'package:untitled/sandwitch.dart';
+import 'package:untitled/tabbarviewclass.dart';
 class detail extends StatefulWidget {
   String image;
   String productname;
@@ -12,25 +21,37 @@ class detail extends StatefulWidget {
   State<detail> createState() => _detailState();
 }
 
-class _detailState extends State<detail> {
+class _detailState extends State<detail> with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    final Productprovider = Provider.of<productprovider>(context,listen: false).fetchproductdata();
+
+    _tabController = TabController(length:4, vsync: this);
+  }
   @override
   Widget build(BuildContext context) {
+    final Productprovider = Provider.of<productprovider>(context,listen: true);
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.pink,
         bottom:PreferredSize(
-          preferredSize: Size.fromHeight(20),
+          preferredSize: Size.fromHeight(60),
           child:Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            // mainAxisAlignment: MainAxisAlignment.start,
+            // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    // mainAxisAlignment: MainAxisAlignment.center,
+                    // crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
                         decoration: BoxDecoration(
@@ -53,6 +74,25 @@ class _detailState extends State<detail> {
 
                         ),
                       ),
+                      TabBar(
+                        controller: _tabController,
+                          tabs: [
+                            Tab(
+                              text: 'Popular',
+                            ),
+                            Tab(
+                              text: 'Appetizer',
+                            ),
+                            Tab(
+                              text: 'Frieds',
+                            ),
+                            Tab(
+                              text: 'Sandwitches',
+                            ),
+                          ],
+                      ),
+
+
                     ],
                   ),
                 ),
@@ -61,53 +101,40 @@ class _detailState extends State<detail> {
           ) ,
         ),
       ),
-      body: Column(
-        children: [
-          SizedBox(height: 10,),
-          Expanded(
-            child: InkWell(
-              onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>productcategory()));
-              },
-              child: Container(
-                height: MediaQuery.of(context).size.height*1,
-  width: double.infinity,
-         //   width: 100,
-                decoration: BoxDecoration(
-              //   color: Colors.red
-                ),
-                child: ListView.builder(
-                  scrollDirection: Axis.vertical,
-                    itemCount: helperclass.itemcount,
-                    itemBuilder: (context,index){
-                      foodmodel mod = helperclass.getstatus(index);
+      body: FutureBuilder(
+        future: Future.value(Productprovider.getproductlist),
+        builder: (context,snapshot){
+          if(!snapshot.hasData) {
+            return Text('no data');
 
-                  return Container(
-                    height: 200,
+          }
+          else if (snapshot.connectionState==ConnectionState.waiting){
+            return CircularProgressIndicator();
+          }
+          else if(snapshot.connectionState==ConnectionState.done){
+            return  TabBarView(
+                controller: _tabController,
+                children:[
+
+              tabbarview(prodductlist: snapshot.data!),
+                  appetizer(prodductlist: snapshot.data!),
+                  fries(prodductlist: snapshot.data!),
+                  sandwitch(prodductlist: snapshot.data!),
 
 
-                    decoration: BoxDecoration(
-                 //    color: Colors.grey,
+            ]);
+          }
+          // else if(snapshot.hasData){
+          //   return tabbarview(
+          //       tabController: _tabController, prodductlist: snapshot.data!);
+          // }
+          else {
+            return  Text('something happens');
+          }
+          },
 
-                    //  color: Colors.yellow
-                    ),
-                    child: ListTile(
-                      title: Text(mod.productname.toString().toUpperCase(),),
-                      trailing: Image(image: AssetImage(mod.image),),
-                     subtitle: Text(
-                       mod.productprice.toString(),style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),),
-
-
-                    ),
-                  );
-
-
-                }),
-              ),
-            ),
-          )
-        ],
       ),
     );
   }
 }
+
